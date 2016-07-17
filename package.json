@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "An emulated transparent background for HyperTerm!",
   "main": "index.js",
+  "scripts": {
+    "test": "''"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dfrankland/hyperterm-transparent-bg.git"
