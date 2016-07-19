@@ -20,17 +20,36 @@ color][2] as your `config.backgroundColor`
 
 ### Configuration
 
+#### Usage with themes
+
+Yes, it works with themes! All that is needed is to add this package anywhere
+after the theme package and it will automatically apply the effects from the
+`config.transparentBg` property below to the background from the theme.
+
+For example using the [`hyperterm-material`](https://github.com/dperrera/hyperterm-material) theme:
+
+```javascript
+module.exports = {
+  plugins: [
+    'hyperterm-material',
+    'hyperterm-transparent-bg',
+  ],
+};
+```
+
+##### Properties
+
 Add these properties to your `~/.hyperterm.js` file to configure
 `hyperterm-transparent-bg`.
 
-#### `config.backgroundColor`
+###### `config.backgroundColor`
 
 *   Type: string (hex color '#AARRGGBB')
 *   Default: `'#000'`
 
 The normal background property for HyperTerm.
 
-#### `config.transparentBg`
+###### `config.transparentBg`
 
 *   Type: object
 *   Default: `{ WebkitFilter: 'blur(5px)', opacity: '0.3' }`
