@@ -1,19 +1,26 @@
-const { app } = require('electron');
+const electron = require('electron');
+const { app } = electron;
 const uuid = require('uuid');
+const executeJavaScript = require('./lib/executeJavaScript');
+const bg = require('./lib/bg');
 
 const id = uuid.v4();
 
+// Default background effects
 let transparentBgConfig = {
   WebkitFilter: 'blur(5px)',
   opacity: '0.3',
 };
 
+// Default backgroun color, just in case it's not set
 let backgroundColor = '#000';
 
 // This throws an error for some reason... Letting that error die a silent death...
 try {
   // Enable capturing of the screen to set as the background
   app.commandLine.appendSwitch('enable-blink-features', 'GetUserMedia');
+  app.commandLine.appendSwitch('enable-usermedia-screen-capturing');
+  app.commandLine.appendSwitch('max-gum-fps', '60');
 } catch (iDontKnowWhyThisIsAnError) {}
 
 exports.decorateConfig = config => {
@@ -33,100 +40,31 @@ exports.onWindow = win => {
   // Don't capture the console as part of the background
   win.setContentProtection(true);
 
-  const bgSetVideo = `(callback) => {
-    const container = document.createElement('div');
-    const video = document.createElement('video');
-    video.id = '${id}';
-    video.autoplay = true;
+  let screen;
+  const getScreen = location => electron.screen.getDisplayNearestPoint(location);
 
-    const styleElement = (style, element) => {
-      Object.keys(style).forEach(
-        property => element.style[property] = style[property]
-      );
-    };
+  const update = event => {
+    const location = event.sender.getBounds();
+    const newScreen = getScreen(location);
+    if (screen.id !== newScreen.id) {
+      screen = newScreen;
+      executeJavaScript(event.sender, bg.video.update({ screen, video: { id } }));
+    }
 
-    styleElement(${
-      JSON.stringify(
-        Object.assign(
-          {
-            position: 'absolute',
-            zIndex: -1,
-            width: '100%',
-            height: '100%',
-            top: 0,
-            left: 0,
-            overflow: 'hidden',
-          },
-          transparentBgConfig
-        )
-      )
-    }, container);
-
-    styleElement({
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      transition: 'top, left ease-in-out 100ms',
-    }, video);
-
-    const start = stream => {
-      video.src = window.URL.createObjectURL(stream);
-      container.appendChild(video);
-      document.body.appendChild(container);
-      document.body.style.backgroundColor = '${backgroundColor}';
-      stream.onended = () => container.remove();
-      if (callback) callback();
-    };
-
-    const reportErrors = error => console.error(error);
-
-    const media = {
-      video: {
-        mandatory: {
-          chromeMediaSource: 'screen',
-          minFrameRate: 30,
-          maxWidth: screen.width,
-          maxHeight: screen.height,
-        },
-        optional: [
-          { minFrameRate: 60 },
-        ],
-      },
-    };
-
-    navigator
-      .mediaDevices
-      .getUserMedia(media)
-      .then(start)
-      .catch(reportErrors);
-  }`;
-
-  const bgSetPosition = ({ x, y }) =>
-    `(callback) => {
-      const video = document.getElementById('${id}');
-      video.style.top = '${y * -1}px';
-      video.style.left = '${x * -1}px';
-      if (callback) callback();
-    }`;
-
-  const execute = (instance, command, callback) => {
-    const js = `(${command})(${callback ? callback : ''})`;
-    if (process.env.DEBUG) console.log(js);
-    instance.webContents.executeJavaScript(js);
+    bg.video.update({ screen, video: { id } });
+    executeJavaScript(event.sender, bg.position({ id, screen, location }));
   };
 
   win.webContents.on('dom-ready', () => {
-    execute(
+    const location = win.getBounds();
+    screen = getScreen(location);
+    executeJavaScript(
       win,
-      bgSetVideo,
-      bgSetPosition(win.getBounds())
+      bg.video.set({ screen, video: { id, style: transparentBgConfig, backgroundColor } }),
+      bg.position({ id, screen, location })
     );
-    win.on('move', event => {
-      execute(event.sender, bgSetPosition(event.sender.getBounds()));
-    });
-    win.on('resize', event => {
-      execute(event.sender, bgSetPosition(event.sender.getBounds()));
-    });
+    win.on('move', update);
+    win.on('resize', update);
   });
 
 };
