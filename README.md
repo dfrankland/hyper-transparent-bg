@@ -1,6 +1,6 @@
-# HyperTerm Transparent Background Plugin
+# Hyper.app Transparent Background Plugin
 
-> An emulated transparent background for [HyperTerm](https://hyperterm.org/)!
+> An emulated transparent background for [Hyper.app](https://hyper.is/)!
 
 ## WAT HOW DOES IT WORK
 
@@ -32,22 +32,22 @@ For example using the [`hyperterm-material`](https://github.com/dperrera/hyperte
 module.exports = {
   plugins: [
     'hyperterm-material',
-    'hyperterm-transparent-bg',
+    'hyper-transparent-bg',
   ],
 };
 ```
 
 ##### Properties
 
-Add these properties to your `~/.hyperterm.js` file to configure
-`hyperterm-transparent-bg`.
+Add these properties to your `~/.hyper.js` file to configure
+`hyper-transparent-bg`.
 
 ###### `config.backgroundColor`
 
 *   Type: string (hex color '#AARRGGBB')
 *   Default: `'#000'`
 
-The normal background property for HyperTerm.
+The normal background property for Hyper.app.
 
 ###### `config.transparentBg`
 

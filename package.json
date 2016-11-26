@@ -1,16 +1,17 @@
 {
-  "name": "hyperterm-transparent-bg",
+  "name": "hyper-transparent-bg",
   "version": "1.5.1",
-  "description": "An emulated transparent background for HyperTerm!",
+  "description": "An emulated transparent background for Hyper.app!",
   "main": "index.js",
   "scripts": {
     "test": ""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dfrankland/hyperterm-transparent-bg.git"
+    "url": "git+https://github.com/dfrankland/hyper-transparent-bg.git"
   },
   "keywords": [
+    "hyper",
     "hyperterm",
     "background",
     "bg",
@@ -20,9 +21,9 @@
   "author": "Dylan Frankland <dylan@frankland.io>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dfrankland/hyperterm-transparent-bg/issues"
+    "url": "https://github.com/dfrankland/hyper-transparent-bg/issues"
   },
-  "homepage": "https://github.com/dfrankland/hyperterm-transparent-bg#readme",
+  "homepage": "https://github.com/dfrankland/hyper-transparent-bg#readme",
   "dependencies": {
     "electron": "^0.4.1",
     "uuid": "^2.0.2"
