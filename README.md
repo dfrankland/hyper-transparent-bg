@@ -10,13 +10,13 @@ It's an HTML5 `<video />` of the entire screen that's moved when the window
 moves. CSS is used to make it transparent and add other effects.
 
 **If you don't want a blur or other effects added to your background, but you
-still want it to be transparent, just use [an 8 digit hexcidecimal `#AARRGGBB`
-color][2] as your `config.backgroundColor`
-(ex `config.backgroundColor: '#AA000000'`).**
+still want it to be transparent, just use an `rgba` color as your
+`config.backgroundColor` (ex `config.backgroundColor: 'rgba(0, 0, 0, 0.3)'`).
+The alpha transparency must be greater than `0` for this to work.**.
 
 ### Demo
 
-![alt demo][3]
+![alt demo][2]
 
 ### Configuration
 
@@ -26,7 +26,7 @@ Yes, it works with themes! All that is needed is to add this package anywhere
 after the theme package and it will automatically apply the effects from the
 `config.transparentBg` property below to the background from the theme.
 
-For example using the [`hyperterm-material`](https://github.com/dperrera/hyperterm-material) theme:
+For example using the [`hyperterm-material`][3] theme:
 
 ```javascript
 module.exports = {
@@ -44,7 +44,7 @@ Add these properties to your `~/.hyper.js` file to configure
 
 ###### `config.backgroundColor`
 
-*   Type: string (hex color '#AARRGGBB')
+*   Type: string (`hex` or `rgba` color)
 *   Default: `'#000'`
 
 The normal background property for Hyper.app.
@@ -68,8 +68,8 @@ Setting the `DEBUG` environmental variable to a [truthy value][6] will make the
 plugin `console.log` the commands that are being sent to the window.
 
 [1]: http://i.giphy.com/12mPcp41D9a1i0.gif
-[2]: https://developer.mozilla.org/en-US/docs/Web/CSS/color_value#rgba()
-[3]: http://i.giphy.com/3o6ZsYOu9C7RhSWFBS.gif
+[2]: http://i.giphy.com/3o6ZsYOu9C7RhSWFBS.gif
+[3]: https://github.com/dperrera/hyperterm-material
 [4]: https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration/cssText
 [5]: https://facebook.github.io/react/tips/inline-styles.html
 [6]: https://developer.mozilla.org/en-US/docs/Glossary/Truthy
