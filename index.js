@@ -31,7 +31,7 @@ exports.decorateConfig = config => {
 
   // Set background to be transparent to show video
   const newConfig = Object.assign({}, config);
-  newConfig.backgroundColor = '#00000000';
+  newConfig.backgroundColor = 'rgba(0, 0, 0, 0.1)';
   return newConfig;
 };
 
